@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetChat - 宠物对话应用</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部状态栏 -->
+        <div class="status-bar">
+            <div class="status-info">
+                <span class="time" id="current-time">12:34</span>
+                <span class="pet-status">
+                    <i class="fas fa-circle status-online"></i>
+                    小白在线
+                </span>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content" id="main-content">
+            
+            <!-- 对话模块 -->
+            <div class="page-content active" id="chat-page">
+                <div class="page-header">
+                    <h1><i class="fas fa-comments"></i> 与小白对话</h1>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message pet-message">
+                            <div class="message-avatar">🐕</div>
+                            <div class="message-content">
+                                <div class="pet-voice-message">
+                                    <div class="voice-wave">
+                                        <span></span><span></span><span></span><span></span><span></span>
+                                    </div>
+                                    <span class="voice-duration">3"</span>
+                                    <button class="voice-play-btn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                </div>
+                                <div class="translation-box">
+                                    <div class="translation-text">汪汪~主人你回来啦！</div>
+                                    <div class="translation-feedback">
+                                        <button class="feedback-btn thumbs-up">
+                                            <i class="far fa-thumbs-up"></i>
+                                        </button>
+                                        <button class="feedback-btn thumbs-down">
+                                            <i class="far fa-thumbs-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="message-time">刚刚</div>
+                            </div>
+                        </div>
+                        <div class="message user-message">
+                            <div class="message-content">
+                                <div class="message-text">小白乖，有想我吗？</div>
+                                <div class="message-time">刚刚</div>
+                            </div>
+                            <div class="message-avatar">👤</div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <div class="input-controls">
+                            <button class="voice-toggle-btn" id="voice-toggle-btn">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <input type="text" class="message-input" id="message-input" placeholder="输入消息...">
+                            <button class="send-btn" id="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="voice-input-area" id="voice-input-area" style="display: none;">
+                            <div class="voice-input-container" id="voice-input-container">
+                                <div class="voice-cancel-area" id="voice-cancel-area">
+                                    <i class="fas fa-ban"></i>
+                                    <div>松开取消</div>
+                                </div>
+                                <div class="voice-tip">按住说话</div>
+                                <button class="voice-record-btn" id="voice-record-btn">
+                                    <div class="voice-icon">
+                                        <i class="fas fa-microphone"></i>
+                                    </div>
+                                </button>
+                                <div class="voice-cancel-tip">上滑取消</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 定位模块 -->
+            <div class="page-content" id="location-page">
+                <div class="page-header">
+                    <h1><i class="fas fa-map-marker-alt"></i> 小白的位置</h1>
+                </div>
+                <div class="location-container">
+                    <div class="location-card">
+                        <div class="location-status">
+                            <div class="location-icon">📍</div>
+                            <div class="location-info">
+                                <h3>当前位置</h3>
+                                <p>家附近公园</p>
+                                <span class="location-time">2分钟前更新</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-placeholder">
+                        <div class="map-content">
+                            <i class="fas fa-map"></i>
+                            <p>地图视图</p>
+                            <div class="pet-marker">🐕</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 电子围栏设置 -->
+                    <div class="electronic-fence">
+                        <h3>电子围栏设置</h3>
+                        <div class="fence-item">
+                            <div class="fence-info">
+                                <i class="fas fa-home"></i>
+                                <span class="fence-name">家附近</span>
+                                <span class="fence-radius">半径 100m</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="fence-item">
+                            <div class="fence-info">
+                                <i class="fas fa-tree"></i>
+                                <span class="fence-name">社区公园</span>
+                                <span class="fence-radius">半径 200m</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <button class="add-fence-btn">
+                            <i class="fas fa-plus"></i>
+                            添加新围栏
+                        </button>
+                    </div>
+                    
+                    <!-- 活动警告 -->
+                    <div class="activity-alerts">
+                        <h3>活动警告</h3>
+                        <div class="alert-item warning">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <span class="alert-time">10:32</span>
+                                <span class="alert-text">小白离开了安全区域</span>
+                            </div>
+                        </div>
+                        <div class="alert-item info">
+                            <div class="alert-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <span class="alert-time">09:15</span>
+                                <span class="alert-text">小白已进入社区公园</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="location-history">
+                        <h3>今日活动轨迹</h3>
+                        <div class="activity-item">
+                            <span class="activity-time">09:00</span>
+                            <span class="activity-desc">在家休息</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-time">14:30</span>
+                            <span class="activity-desc">散步到公园</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-time">16:20</span>
+                            <span class="activity-desc">当前位置</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 动态模块 -->
+            <div class="page-content" id="social-page">
+                <div class="page-header">
+                    <h1><i class="fas fa-heart"></i> 宠物动态</h1>
+                    <button class="post-btn" id="post-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="social-container">
+                    <div class="social-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">24</div>
+                            <div class="stat-label">今日动态</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">获赞数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">新消息</div>
+                        </div>
+                    </div>
+                    
+                    <div class="moments-feed">
+                        <div class="moment-item">
+                            <div class="moment-avatar">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FFE4B5'/%3E%3Ctext x='20' y='26' text-anchor='middle' font-size='16'%3E👩%3C/text%3E%3C/svg%3E" alt="张小美">
+                            </div>
+                            <div class="moment-content">
+                                <div class="moment-header">
+                                    <span class="moment-name">张小美</span>
+                                    <span class="moment-time">2小时前</span>
+                                </div>
+                                <div class="moment-text">小白今天学会了新技能，会握手了！太聪明了~</div>
+                                <div class="moment-images">
+                                    <div class="moment-image">🐕‍🦺</div>
+                                </div>
+                                <div class="moment-actions">
+                                    <button class="action-btn like-btn">
+                                        <i class="far fa-heart"></i>
+                                        <span>12</span>
+                                    </button>
+                                    <button class="action-btn comment-btn">
+                                        <i class="far fa-comment"></i>
+                                        <span>3</span>
+                                    </button>
+                                    <button class="action-btn share-btn">
+                                        <i class="far fa-share-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="moment-item">
+                            <div class="moment-avatar">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FFE4B5'/%3E%3Ctext x='20' y='26' text-anchor='middle' font-size='16'%3E👨%3C/text%3E%3C/svg%3E" alt="李大明">
+                            </div>
+                            <div class="moment-content">
+                                <div class="moment-header">
+                                    <span class="moment-name">李大明</span>
+                                    <span class="moment-time">4小时前</span>
+                                </div>
+                                <div class="moment-text">带着毛毛去公园散步，遇到了好多小朋友都想摸它哈哈</div>
+                                <div class="moment-images">
+                                    <div class="moment-image">🌳</div>
+                                    <div class="moment-image">🐕</div>
+                                </div>
+                                <div class="moment-actions">
+                                    <button class="action-btn like-btn liked">
+                                        <i class="fas fa-heart"></i>
+                                        <span>28</span>
+                                    </button>
+                                    <button class="action-btn comment-btn">
+                                        <i class="far fa-comment"></i>
+                                        <span>7</span>
+                                    </button>
+                                    <button class="action-btn share-btn">
+                                        <i class="far fa-share-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="moment-item">
+                            <div class="moment-avatar">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FFE4B5'/%3E%3Ctext x='20' y='26' text-anchor='middle' font-size='16'%3E👩%3C/text%3E%3C/svg%3E" alt="王小花">
+                            </div>
+                            <div class="moment-content">
+                                <div class="moment-header">
+                                    <span class="moment-name">王小花</span>
+                                    <span class="moment-time">昨天</span>
+                                </div>
+                                <div class="moment-text">第一次使用PetChat，感觉太神奇了！真的能听懂咪咪在说什么</div>
+                                <div class="moment-images">
+                                    <div class="moment-image">😻</div>
+                                </div>
+                                <div class="moment-actions">
+                                    <button class="action-btn like-btn">
+                                        <i class="far fa-heart"></i>
+                                        <span>45</span>
+                                    </button>
+                                    <button class="action-btn comment-btn">
+                                        <i class="far fa-comment"></i>
+                                        <span>12</span>
+                                    </button>
+                                    <button class="action-btn share-btn">
+                                        <i class="far fa-share-square"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 我的宠物模块 -->
+            <div class="page-content" id="pet-page">
+                <div class="page-header">
+                    <h1><i class="fas fa-heart"></i> 我的宠物</h1>
+                </div>
+                <div class="pet-container">
+                    <div class="pet-profile">
+                        <div class="pet-avatar-large">🐕</div>
+                        <div class="pet-details">
+                            <h2>小白</h2>
+                            <p class="pet-breed">金毛犬 • 3岁</p>
+                            <div class="pet-basic-info">
+                                <div class="basic-info-item">
+                                    <span class="info-label">身高：</span>
+                                    <span class="info-value">60cm</span>
+                                </div>
+                                <div class="basic-info-item">
+                                    <span class="info-label">体重：</span>
+                                    <span class="info-value">28kg</span>
+                                </div>
+                                <div class="basic-info-item">
+                                    <span class="info-label">出生日期：</span>
+                                    <span class="info-value">2021-03-15</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pet-functions">
+                        <div class="function-section">
+                            <h3>基本信息</h3>
+                            <div class="function-grid">
+                                <button class="function-btn" data-function="edit-profile">
+                                    <i class="fas fa-user-edit"></i>
+                                    <span>编辑资料</span>
+                                </button>
+                                <button class="function-btn" data-function="pet-album">
+                                    <i class="fas fa-images"></i>
+                                    <span>宠物相册</span>
+                                </button>
+                                <button class="function-btn" data-function="growth-record">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>成长记录</span>
+                                </button>
+                                <button class="function-btn" data-function="medical-record">
+                                    <i class="fas fa-heartbeat"></i>
+                                    <span>病历档案</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="function-section">
+                            <h3>日常照护</h3>
+                            <div class="function-grid">
+                                <button class="function-btn" data-function="feeding-plan">
+                                    <i class="fas fa-utensils"></i>
+                                    <span>喂食计划</span>
+                                </button>
+                                <button class="function-btn" data-function="exercise-plan">
+                                    <i class="fas fa-walking"></i>
+                                    <span>运动计划</span>
+                                </button>
+                                <button class="function-btn" data-function="grooming">
+                                    <i class="fas fa-cut"></i>
+                                    <span>美容护理</span>
+                                </button>
+                                <button class="function-btn" data-function="vaccine-schedule">
+                                    <i class="fas fa-syringe"></i>
+                                    <span>疫苗计划</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="function-section">
+                            <h3>智能设备</h3>
+                            <div class="function-grid">
+                                <button class="function-btn" data-function="device-settings">
+                                    <i class="fas fa-cog"></i>
+                                    <span>铭牌设置</span>
+                                </button>
+                                <button class="function-btn" data-function="device-status">
+                                    <i class="fas fa-wifi"></i>
+                                    <span>连接状态</span>
+                                </button>
+                                <button class="function-btn" data-function="voice-training">
+                                    <i class="fas fa-microphone-alt"></i>
+                                    <span>语音训练</span>
+                                </button>
+                                <button class="function-btn" data-function="firmware-update">
+                                    <i class="fas fa-download"></i>
+                                    <span>固件更新</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="function-section">
+                            <h3>数据分析</h3>
+                            <div class="function-grid">
+                                <button class="function-btn" data-function="behavior-analysis">
+                                    <i class="fas fa-brain"></i>
+                                    <span>行为分析</span>
+                                </button>
+                                <button class="function-btn" data-function="emotion-report">
+                                    <i class="fas fa-smile"></i>
+                                    <span>情绪报告</span>
+                                </button>
+                                <button class="function-btn" data-function="health-report">
+                                    <i class="fas fa-file-medical"></i>
+                                    <span>健康报告</span>
+                                </button>
+                                <button class="function-btn" data-function="activity-report">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>活动统计</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="function-section">
+                            <h3>其他功能</h3>
+                            <div class="function-grid">
+                                <button class="function-btn" data-function="emergency-contact">
+                                    <i class="fas fa-phone"></i>
+                                    <span>紧急联系</span>
+                                </button>
+                                <button class="function-btn" data-function="insurance">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>宠物保险</span>
+                                </button>
+                                <button class="function-btn" data-function="notifications">
+                                    <i class="fas fa-bell"></i>
+                                    <span>通知设置</span>
+                                </button>
+                                <button class="function-btn" data-function="backup">
+                                    <i class="fas fa-cloud"></i>
+                                    <span>数据备份</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-page="chat-page">
+                <i class="fas fa-comments"></i>
+                <span>对话</span>
+            </button>
+            <button class="nav-item" data-page="location-page">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>定位</span>
+            </button>
+            <button class="nav-item" data-page="social-page">
+                <i class="fas fa-heart"></i>
+                <span>动态</span>
+            </button>
+            <button class="nav-item" data-page="pet-page">
+                <i class="fas fa-heart"></i>
+                <span>我的宠物</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- 长按消息上下文菜单 -->
+    <div class="message-context-menu" id="message-context-menu">
+        <button class="context-menu-item" id="copy-message">
+            <i class="far fa-copy"></i>
+            <span>复制</span>
+        </button>
+        <button class="context-menu-item" id="feedback-message" style="display: none;">
+            <i class="far fa-comment-dots"></i>
+            <span>反馈</span>
+        </button>
+    </div>
+
+    <!-- 反馈弹窗 -->
+    <div class="feedback-modal" id="feedback-modal">
+        <div class="feedback-modal-content">
+            <div class="feedback-modal-header">
+                <h3>翻译反馈</h3>
+                <p>请告诉我们翻译的问题，帮助我们改进</p>
+            </div>
+            <textarea class="feedback-textarea" id="feedback-textarea" placeholder="请描述翻译存在的问题..."></textarea>
+            <div class="feedback-actions">
+                <button class="feedback-btn-cancel" id="feedback-cancel">取消</button>
+                <button class="feedback-btn-submit" id="feedback-submit">提交</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑资料弹窗 -->
+    <div class="edit-profile-modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>编辑宠物资料</h3>
+                <button class="modal-close" id="edit-profile-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>宠物名称</label>
+                    <input type="text" id="pet-name-input" value="小白" placeholder="请输入宠物名称">
+                </div>
+                <div class="form-group">
+                    <label>品种</label>
+                    <input type="text" id="pet-breed-input" value="金毛犬" placeholder="请输入宠物品种">
+                </div>
+                <div class="form-group">
+                    <label>年龄</label>
+                    <input type="number" id="pet-age-input" value="3" placeholder="请输入年龄" min="0" max="30">
+                </div>
+                <div class="form-group">
+                    <label>身高 (cm)</label>
+                    <input type="number" id="pet-height-input" value="60" placeholder="请输入身高" min="0">
+                </div>
+                <div class="form-group">
+                    <label>体重 (kg)</label>
+                    <input type="number" id="pet-weight-input" value="28" placeholder="请输入体重" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>出生日期</label>
+                    <input type="date" id="pet-birth-input" value="2021-03-15">
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="pet-gender" value="male" checked>
+                            <span>公</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="pet-gender" value="female">
+                            <span>母</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn-cancel" id="edit-profile-cancel">取消</button>
+                <button class="modal-btn-submit" id="edit-profile-submit">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成长记录页面 -->
+    <div class="growth-record-page" id="growth-record-page">
+        <div class="growth-record-header">
+            <button class="back-btn" id="growth-back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>成长记录</h2>
+            <button class="add-record-btn" id="add-record-btn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        
+        <div class="growth-record-content">
+            <!-- 成长统计 -->
+            <div class="growth-stats">
+                <div class="stat-card">
+                    <i class="fas fa-weight"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">28kg</span>
+                        <span class="stat-label">当前体重</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-ruler-vertical"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">60cm</span>
+                        <span class="stat-label">当前身高</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">3岁</span>
+                        <span class="stat-label">当前年龄</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 成长图表 -->
+            <div class="growth-chart">
+                <h3>体重变化趋势</h3>
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-line"></i>
+                    <p>体重变化图表</p>
+                </div>
+            </div>
+            
+            <!-- 成长记录列表 -->
+            <div class="growth-records">
+                <h3>成长日记</h3>
+                <div class="record-item">
+                    <div class="record-date">2024年1月15日</div>
+                    <div class="record-content">
+                        <div class="record-metrics">
+                            <span class="metric">体重: 28kg</span>
+                            <span class="metric">身高: 60cm</span>
+                        </div>
+                        <div class="record-note">
+                            今天带小白去体检，医生说很健康，体重控制得很好！
+                        </div>
+                        <div class="record-images">
+                            <div class="record-image">📷</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="record-item">
+                    <div class="record-date">2023年12月20日</div>
+                    <div class="record-content">
+                        <div class="record-metrics">
+                            <span class="metric">体重: 27.5kg</span>
+                            <span class="metric">身高: 60cm</span>
+                        </div>
+                        <div class="record-note">
+                            小白学会了新技能——握手！真是太聪明了~
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="record-item">
+                    <div class="record-date">2023年11月10日</div>
+                    <div class="record-content">
+                        <div class="record-metrics">
+                            <span class="metric">体重: 27kg</span>
+                            <span class="metric">身高: 59cm</span>
+                        </div>
+                        <div class="record-note">
+                            第一次带小白去海边，它超级兴奋，在沙滩上跑了一下午！
+                        </div>
+                        <div class="record-images">
+                            <div class="record-image">🏖️</div>
+                            <div class="record-image">🐕</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -72,9 +72,9 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% - 80px);
+    height: 100%;
     padding: 20px;
-    padding-bottom: 0;
+    padding-bottom: 80px;
     overflow-y: auto;
     overflow-x: hidden;
     transform: translateX(100%);
@@ -85,8 +85,7 @@ body {
 }
 
 .page-content#chat-page {
-    height: 100%;
-    padding-bottom: 80px;
+    padding-bottom: 0;
 }
 
 .page-content.active {
@@ -115,21 +114,28 @@ body {
 
 /* 对话模块样式 */
 .chat-container {
-    height: 100%;
+    height: calc(100vh - 40px);
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .chat-messages {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    will-change: scroll-position;
+}
+
+.chat-messages .message {
+    margin-bottom: 15px;
+}
+
+.chat-messages .message:last-child {
+    margin-bottom: 0;
 }
 
 .message {
@@ -193,6 +199,9 @@ body {
     border-radius: 25px 25px 0 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
 }
 
 .input-controls {

@@ -504,12 +504,22 @@ function addMessageLongPress(messageElement, sender) {
     
     // 鼠标/触摸开始
     const startLongPress = (e) => {
+        // 只在消息内容区域触发，不在头像或空白区域触发
+        const messageContent = messageElement.querySelector('.message-content');
+        const target = e.target;
+        
+        // 检查点击目标是否在消息内容区域内
+        if (!messageContent || !messageContent.contains(target)) {
+            return;
+        }
+        
         isLongPressed = false;
         touchMoved = false;
         startTime = Date.now();
         
         // 防止文本选择和默认行为
         e.preventDefault();
+        e.stopPropagation();
         
         pressTimer = setTimeout(() => {
             isLongPressed = true;

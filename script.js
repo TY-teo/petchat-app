@@ -118,6 +118,14 @@ function bindChatEvents() {
             hideVoiceInput();
         }
     });
+    
+    // 阻止语音界面的长按事件传播
+    voiceInputArea.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+    });
+    voiceInputArea.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+    });
 }
 
 // 发送消息功能
@@ -288,6 +296,9 @@ function toggleVoiceInput() {
 // 显示语音输入界面
 function showVoiceInput() {
     voiceInputArea.style.display = 'flex';
+    // 禁用消息长按事件
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
     setTimeout(() => {
         voiceInputArea.style.opacity = '1';
     }, 10);
@@ -296,6 +307,9 @@ function showVoiceInput() {
 // 隐藏语音输入界面
 function hideVoiceInput() {
     voiceInputArea.style.opacity = '0';
+    // 恢复消息长按事件
+    document.body.style.userSelect = '';
+    document.body.style.webkitUserSelect = '';
     setTimeout(() => {
         voiceInputArea.style.display = 'none';
     }, 300);
@@ -330,8 +344,8 @@ function startRecording(e) {
     document.querySelector('.voice-tip').textContent = '正在录音...';
     document.querySelector('.voice-cancel-tip').textContent = '松开发送，上滑取消';
     
-    // 绑定移动事件
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    // 绑定移动事件，只在录音按钮区域内阻止默认行为
+    voiceRecordBtn.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('mousemove', handleMouseMove);
 }
 
@@ -409,7 +423,7 @@ function stopRecording(e) {
     voiceCancelArea.classList.remove('show');
     
     // 移除事件监听
-    document.removeEventListener('touchmove', handleTouchMove);
+    voiceRecordBtn.removeEventListener('touchmove', handleTouchMove);
     document.removeEventListener('mousemove', handleMouseMove);
     
     if (recordingTimer) {

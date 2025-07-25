@@ -72,13 +72,21 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 80px);
     padding: 20px;
-    padding-bottom: 80px;
+    padding-bottom: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     background: #f8f9fa;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+.page-content#chat-page {
+    height: 100%;
+    padding-bottom: 80px;
 }
 
 .page-content.active {
@@ -107,7 +115,7 @@ body {
 
 /* 对话模块样式 */
 .chat-container {
-    height: calc(100% - 60px);
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -115,10 +123,13 @@ body {
 .chat-messages {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px 0;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
 }
 
 .message {
@@ -130,7 +141,7 @@ body {
 
 .message.user-message {
     align-self: flex-end;
-    flex-direction: row-reverse;
+    flex-direction: row;
 }
 
 .message-avatar {
@@ -181,6 +192,7 @@ body {
     padding: 15px;
     border-radius: 25px 25px 0 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
 }
 
 .input-controls {
@@ -305,7 +317,7 @@ body {
 }
 
 .voice-input-area {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -314,7 +326,7 @@ body {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    z-index: 1000;
+    z-index: 9999;
     padding-bottom: 150px;
 }
 
